@@ -2,6 +2,7 @@
 using PokemonAPI.Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace PokemonAPI.Service.Tests
@@ -12,7 +13,12 @@ namespace PokemonAPI.Service.Tests
         [TestMethod()]
         public void PokemonServiceTest()
         {
-            Assert.Fail();
+            // Assert.ThrowsException<NotImplementedException>(() =>  new PokemonService());
+
+            //Assert.ThrowsException<DirectoryNotFoundException>(() => new PokemonService());
+
+            var pokemonService = new PokemonService();
+            Assert.IsNotNull(pokemonService);
         }
 
 

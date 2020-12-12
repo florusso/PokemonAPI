@@ -1,44 +1,66 @@
-﻿using PokeApiNet;
+﻿using Newtonsoft.Json;
+using PokeApiNet;
+using PokemonAPI.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PokemonAPI.Service
 {
-    
+
     public class PokemonService
     {
-      //  private Dictionary<string, int> _PokemonIndex;
+        private HashSet<string> _PokemonIndex;
         public PokemonService()
         {
-           // _PokemonIndex = LoadPokemonIndex();
+            _PokemonIndex = LoadPokemonIndex(@"Data/AddressBook.json");
         }
 
-        //private Dictionary<string, int> LoadPokemonIndex()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
+        private HashSet<string> LoadPokemonIndex(string path)
+        {
+            var ret = new HashSet<string>();
+            var addressBook = new AddressBook();
+            addressBook = JsonConvert.DeserializeObject<AddressBook>(File.ReadAllText(path));
+            ret = new HashSet<string>(addressBook.addressbook.Select(a => a.name).ToArray());
+            return ret;
+        }
+        /// <summary>
+        ///Given a Pokemon name,returns the description 
+        /// </summary>
+        /// <param name="pokemonName"></param>
+        /// <returns>
+        /// Returns the Description of the Pokemon if exists;<br/>
+        /// Empty String if the pokemon does not exist;<br/>
+        /// Null if something goes wrong;
+        /// </returns>
         public async Task<string> FindDescriptionByNameAsync(string pokemonName)
         {
-            // instantiate client
+
             PokeApiClient pokeClient = new PokeApiClient();
             var descriprtion = string.Empty;
-            // get a resource by name
+
             try
             {
-                Pokemon pokemon = await pokeClient.GetResourceAsync<Pokemon>(pokemonName);
-                Ability ability = await pokeClient.GetResourceAsync<Ability>(pokemon.Abilities[0].Ability.Name);
-                descriprtion = ability.EffectEntries.FirstOrDefault(e => e.Language.Name == "en").Effect;
+                /*to avoid error 404 Pokemon not found ,i have preloaded all the pokemon'names
+                 * and i chek in my HashSet before.
+                 */
+                if (_PokemonIndex.Contains(pokemonName))
+
+                {
+                    Pokemon pokemon = await pokeClient.GetResourceAsync<Pokemon>(pokemonName);
+                    Ability ability = await pokeClient.GetResourceAsync<Ability>(pokemon.Abilities[0].Ability.Name);
+                    descriprtion = ability.EffectEntries.FirstOrDefault(e => e.Language.Name == "en").Effect;
+                }
             }
-            catch (System.Net.Http.HttpRequestException ex)
+            catch (Exception ex)
             {
 
-                return descriprtion;
+                return null;
             }
-           
-           
+
+
 
             return descriprtion;
 
