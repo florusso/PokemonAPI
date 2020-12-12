@@ -15,10 +15,14 @@ namespace PokemonAPI.Service.Tests
             Assert.Fail();
         }
 
+
         [TestMethod()]
-        public void FindByNameTest()
+        public void FindDescriptionByNameAsyncTest()
         {
-            Assert.Fail();
+            var pokemonService = new PokemonService();
+            var pokeName = "francesco";
+            var description = pokemonService.FindDescriptionByNameAsync(pokeName).GetAwaiter().GetResult();
+            Assert.IsFalse(String.IsNullOrEmpty(description));
         }
     }
 }
