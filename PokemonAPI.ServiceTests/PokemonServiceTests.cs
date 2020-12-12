@@ -26,7 +26,7 @@ namespace PokemonAPI.Service.Tests
         public void FindDescriptionByNameAsyncTest()
         {
             var pokemonService = new PokemonService();
-            var pokeName = "francesco";
+            var pokeName = "bulbasaur";
             var description = pokemonService.FindDescriptionByNameAsync(pokeName).GetAwaiter().GetResult();
             Assert.IsFalse(String.IsNullOrEmpty(description));
         }

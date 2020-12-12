@@ -31,8 +31,8 @@ namespace PokemonAPI.Service
         /// </summary>
         /// <param name="pokemonName"></param>
         /// <returns>
-        /// Returns the Description of the Pokemon if exists;<br/>
-        /// Empty String if the pokemon does not exist;<br/>
+        /// Returns the description of the Pokemon if exists;<br/>
+        /// Empty string if the pokemon does not exist;<br/>
         /// Null if something goes wrong;
         /// </returns>
         public async Task<string> FindDescriptionByNameAsync(string pokemonName)
