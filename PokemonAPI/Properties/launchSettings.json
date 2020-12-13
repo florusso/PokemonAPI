@@ -29,7 +29,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/pokemom",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/pokemon",
       "publishAllPorts": true,
       "useSSL": true
     }
