@@ -10,7 +10,7 @@ namespace PokemonAPI.Model
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("descriprion")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 }
