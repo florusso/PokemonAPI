@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace PokemonAPI.Service
 {
 
-    public class PokemonService
+    public class PokemonService : IPokemonService
     {
         private HashSet<string> _PokemonIndex;
         public PokemonService()

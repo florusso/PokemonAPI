@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PokemonAPI.Service
 {
-    public class ShakespeareService
+    public class ShakespeareService : IShakespeareService
     {
         public async Task<string> TranslateAsync(string text)
         {
@@ -16,7 +16,7 @@ namespace PokemonAPI.Service
 
             var translated = string.Empty;
             try
-            {                                         
+            {
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -39,8 +39,9 @@ namespace PokemonAPI.Service
                         }
                         else
                         {
+                            //TODO:Handle Too many call error
                             //response.ReasonPhrase
-                           // response.StatusCode
+                            // response.StatusCode
                         }
                     }
                 }
@@ -48,10 +49,10 @@ namespace PokemonAPI.Service
             catch (Exception ex)
             {
                 return null;
-               // _logger.LogError(ex, "ShakespeareService.Tranlaste");
+                // _logger.LogError(ex, "ShakespeareService.Tranlaste");
             }
 
-            
+
             return translated;
         }
     }
