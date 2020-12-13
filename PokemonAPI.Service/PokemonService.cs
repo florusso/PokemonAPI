@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using PokeApiNet;
 using PokemonAPI.Model;
@@ -13,12 +14,16 @@ namespace PokemonAPI.Service
 
     public class PokemonService : IPokemonService
     {
-        private HashSet<string> _PokemonIndex;
+        private HashSet<string> _pokemonIndex;
         private readonly ILogger<PokemonService> _logger;
-        public PokemonService(ILogger<PokemonService> logger)
+        private readonly IOptions<Pokesettings> _settings;
+        public PokemonService(ILogger<PokemonService> logger, IOptions<Pokesettings> settings)
         {
             _logger = logger;
-             _PokemonIndex = LoadPokemonIndex($"Data/AddressBook.json");
+            _settings = settings;
+            _pokemonIndex = LoadPokemonIndex(_settings.Value.AddressBookPath);
+           
+
         }
 
         private HashSet<string> LoadPokemonIndex(string path)
@@ -49,7 +54,7 @@ namespace PokemonAPI.Service
                 /*to avoid error 404 Pokemon not found ,i have preloaded all the pokemon'names
                  * and i chek in my HashSet before.
                  */
-                if (_PokemonIndex.Contains(pokemonName))
+                if (_pokemonIndex.Contains(pokemonName))
 
                 {
                     Pokemon pokemon = await pokeClient.GetResourceAsync<Pokemon>(pokemonName);

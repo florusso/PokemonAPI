@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PokemonAPI.Service;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PokemonAPI.Model;
 
 namespace PokemonAPI.Service.Tests
 {
@@ -15,8 +13,12 @@ namespace PokemonAPI.Service.Tests
         public void TranslateAsyncTest()
         {
             var mockLogger = new Mock<ILogger<ShakespeareService>>();
+            var settings = Options.Create(new Pokesettings());
+            settings.Value.ShekspeareApiUrl = "https://api.funtranslations.com/translate/shakespeare.json";
+            settings.Value.AddressBookPath = "Data/AddressBook.json";
+
             var text = "You gave Mr. Tim a hearty meal, but unfortunately what he ate made him die.";
-            var svc = new ShakespeareService(mockLogger.Object);
+            var svc = new ShakespeareService(mockLogger.Object, settings);
             var translated=  svc.TranslateAsync(text).GetAwaiter().GetResult();
 
             Assert.IsNotNull(translated);

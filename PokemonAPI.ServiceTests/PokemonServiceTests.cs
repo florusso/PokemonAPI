@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PokemonAPI.Service;
+using PokemonAPI.Model;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace PokemonAPI.Service.Tests
 {
@@ -19,7 +17,10 @@ namespace PokemonAPI.Service.Tests
 
             //Assert.ThrowsException<DirectoryNotFoundException>(() => new PokemonService());
             var mockLogger = new Mock<ILogger<PokemonService>>();
-            var pokemonService = new PokemonService(mockLogger.Object);
+            var settings = Options.Create(new Pokesettings());
+            settings.Value.AddressBookPath = "Data/AddressBook.json";
+
+            var pokemonService = new PokemonService(mockLogger.Object, settings);
             Assert.IsNotNull(pokemonService);
         }
 
@@ -28,7 +29,10 @@ namespace PokemonAPI.Service.Tests
         public void FindDescriptionByNameAsyncTest()
         {
             var mockLogger = new Mock<ILogger<PokemonService>>();
-            var pokemonService = new PokemonService(mockLogger.Object);
+            var settings = Options.Create(new Pokesettings());
+            settings.Value.AddressBookPath = "Data/AddressBook.json";
+
+            var pokemonService = new PokemonService(mockLogger.Object, settings);
             var pokeName = "bulbasaur";
             var description = pokemonService.FindDescriptionByNameAsync(pokeName).GetAwaiter().GetResult();
             Assert.IsFalse(String.IsNullOrEmpty(description));
