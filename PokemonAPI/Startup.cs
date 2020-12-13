@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PokemonAPI.Service;
 
 namespace PokemonAPI
 {
@@ -26,6 +27,8 @@ namespace PokemonAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IPokemonService,  PokemonService>();
+            services.AddScoped<IShakespeareService, ShakespeareService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

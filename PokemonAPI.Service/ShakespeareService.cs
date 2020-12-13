@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PokemonAPI.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,11 @@ namespace PokemonAPI.Service
 {
     public class ShakespeareService : IShakespeareService
     {
+        private readonly ILogger<ShakespeareService> _logger;
+        public ShakespeareService(ILogger<ShakespeareService> logger)
+        {
+            _logger = logger;
+        }
         public async Task<string> TranslateAsync(string text)
         {
             var shakespearResource = $"https://api.funtranslations.com/translate/shakespeare.json?text={text}";
@@ -39,17 +45,17 @@ namespace PokemonAPI.Service
                         }
                         else
                         {
-                            //TODO:Handle Too many call error
-                            //response.ReasonPhrase
-                            // response.StatusCode
+                            _logger.LogWarning($"StatusCode: {response.StatusCode} ReasonPhrase:{response.ReasonPhrase}");
+
+                            
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "ShakespeareService.Tranlaste");
                 return null;
-                // _logger.LogError(ex, "ShakespeareService.Tranlaste");
             }
 
 

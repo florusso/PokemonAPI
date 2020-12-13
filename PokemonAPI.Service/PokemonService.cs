@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PokeApiNet;
 using PokemonAPI.Model;
 using System;
@@ -13,9 +14,11 @@ namespace PokemonAPI.Service
     public class PokemonService : IPokemonService
     {
         private HashSet<string> _PokemonIndex;
-        public PokemonService()
+        private readonly ILogger<PokemonService> _logger;
+        public PokemonService(ILogger<PokemonService> logger)
         {
-            _PokemonIndex = LoadPokemonIndex(@"Data/AddressBook.json");
+            _logger = logger;
+             _PokemonIndex = LoadPokemonIndex($"Data/AddressBook.json");
         }
 
         private HashSet<string> LoadPokemonIndex(string path)
@@ -56,6 +59,7 @@ namespace PokemonAPI.Service
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
 
                 return null;
             }
