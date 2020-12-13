@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PokemonAPI.Service;
 using System;
 using System.Collections.Generic;
@@ -16,8 +18,8 @@ namespace PokemonAPI.Service.Tests
             // Assert.ThrowsException<NotImplementedException>(() =>  new PokemonService());
 
             //Assert.ThrowsException<DirectoryNotFoundException>(() => new PokemonService());
-
-            var pokemonService = new PokemonService();
+            var mockLogger = new Mock<ILogger<PokemonService>>();
+            var pokemonService = new PokemonService(mockLogger.Object);
             Assert.IsNotNull(pokemonService);
         }
 
@@ -25,7 +27,8 @@ namespace PokemonAPI.Service.Tests
         [TestMethod()]
         public void FindDescriptionByNameAsyncTest()
         {
-            var pokemonService = new PokemonService();
+            var mockLogger = new Mock<ILogger<PokemonService>>();
+            var pokemonService = new PokemonService(mockLogger.Object);
             var pokeName = "bulbasaur";
             var description = pokemonService.FindDescriptionByNameAsync(pokeName).GetAwaiter().GetResult();
             Assert.IsFalse(String.IsNullOrEmpty(description));
