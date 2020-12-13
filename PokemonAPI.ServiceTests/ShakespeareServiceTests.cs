@@ -12,7 +12,7 @@ namespace PokemonAPI.Service.Tests
         [TestMethod()]
         public void TranslateAsyncTest()
         {
-            var text = "Ups FIRE moves in a pinch.";//"You gave Mr. Tim a hearty meal, but unfortunately what he ate made him die.";
+            var text = "You gave Mr. Tim a hearty meal, but unfortunately what he ate made him die.";
             var svc = new ShakespeareService();
             var translated=  svc.TranslateAsync(text).GetAwaiter().GetResult();
 
